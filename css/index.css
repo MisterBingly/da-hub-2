@@ -54,6 +54,11 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  transition: 0.5s ease background;
+
+  &:has(.openButton:hover) {
+    background: rgba(0, 0, 0, 0.2);
+  }
 }
 
 button.openButton {
