@@ -1,0 +1,122 @@
+@import url("themes/default.css");
+
+:root {
+  --buttonImageEndPosition: 500px;
+  --buttonImageEndOpacity: 0.3;
+}
+
+@keyframes buttonFlash {
+  0% {
+    outline-color: var(--accent);
+  }
+
+  50% {
+    outline-color: var(--accentLight);
+  }
+
+  100% {
+    outline-color: var(--accent);
+  }
+}
+
+@keyframes buttonHoverRepeatingImage {
+  0% {
+    opacity: 0;
+    background-position: 0;
+  }
+
+  1% {
+    opacity: var(--buttonImageEndOpacity);
+  }
+
+  100% {
+    background-position: var(--buttonImageEndPosition);
+  }
+}
+
+html {
+  background-color: rgb(62, 36, 60);
+  background-image: url("https://raw.githubusercontent.com/butterdogco/da-hub/refs/heads/main/img/background.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center right;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+
+body {
+  background: transparent;
+  padding-bottom: 30px;
+  font-family: var(--font);
+  color: white;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+button.openButton {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 350px;
+  max-width: 90vw;
+  height: 200px;
+  max-height: 90vh;
+  margin: 6px;
+  background: var(--accentDarkBackgroundTransparent2);
+  border: none;
+  outline: 4px solid var(--accentDarkBackgroundTransparent1);
+  outline-offset: 0;
+  color: var(--textColor1);
+  font-weight: bold;
+  font-size: 25px;
+  border-radius: var(--borderRadius1);
+  cursor: pointer;
+  overflow: hidden;
+  transition: 0.1s ease;
+  transition-property: outline-offset outline-color background width box-shadow;
+
+  .repeatingImage {
+    background-image: url("https://raw.githubusercontent.com/butterdogco/butterdogco.github.io/refs/heads/main/docs/img/favicon.ico");
+    background-repeat: repeat;
+    width: 150%;
+    height: 250%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(25deg);
+    transition: 0.1s ease opacity;
+    opacity: 0;
+    z-index: 0;
+  }
+
+  p {
+    position: relative;
+    z-index: 5;
+  }
+
+  &:hover,
+  &:focus,
+  &:active,
+  &:focus-within {
+    background: var(--accentDarkBackgroundTransparent1);
+    outline-offset: 6px;
+    outline-color: var(--accent);
+    width: 500px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+    animation: buttonFlash 1.5s ease infinite;
+
+    .repeatingImage {
+      background-position: var(--buttonImageEndPosition);
+      opacity: var(--buttonImageEndOpacity);
+      animation: buttonHoverRepeatingImage 30s linear;
+    }
+
+    p {
+      text-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+  }
+}

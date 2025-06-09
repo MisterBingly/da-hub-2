@@ -14,6 +14,8 @@ let currentAppSize = "default";
 let mobileMode = ["true", true].includes(localStorage.getItem(daHubSettingsPrefix + "MobileMode") || "nope");
 let currentApp;
 
+// TODO: Import fetchData and openWindow from utils.js
+
 /**
  * Sends a get request to the provided URL, and returns the response text.
  */
