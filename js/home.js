@@ -243,10 +243,10 @@ document.addEventListener('DOMContentLoaded', function () {
   // checkInFrame();
 });
 
-clear.addEventListener("click", function () {
-  searchInput.value = "";
-  searchApp();
-});
+// clear.addEventListener("click", function () {
+//   searchInput.value = "";
+//   searchApp();
+// });
 
 searchForm.addEventListener("input", handleSearch);
 searchForm.addEventListener("submit", handleSearch);

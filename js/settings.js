@@ -1,5 +1,6 @@
-import { languages, updateLanguage, getElementLanguageData, unsafeGetElementLanguageData, currentLanguage, currentLanguageData } from "./locales.js";
-let _currentLanguage = currentLanguage;
+// import { languages, updateLanguage, getElementLanguageData, unsafeGetElementLanguageData, currentLanguage, currentLanguageData } from "./locales.js";
+let _currentLanguage = locales.currentLanguage;
+let settings = {}; // Object to hold settings data
 
 // Settings Handler
 let settingsFrame = document.getElementById("settingsFrame");
@@ -11,23 +12,23 @@ const settingsItemLangPrefix = "settingsItem";
 const settingsSocialLangPrefix = "settingsSocial";
 
 async function getSettingDisplayName(name) {
-  return await getElementLanguageData(settingsItemLangPrefix + name);
+  return await locales.getElementLanguageData(settingsItemLangPrefix + name);
 }
 
 async function getSettingHeaderText(name) {
-  return await getElementLanguageData(settingsHeaderLangPrefix + name);
+  return await locales.getElementLanguageData(settingsHeaderLangPrefix + name);
 }
 
 async function getSocialLinkText(name) {
-  return await getElementLanguageData(settingsSocialLangPrefix + name);
+  return await locales.getElementLanguageData(settingsSocialLangPrefix + name);
 }
 
 async function initSettings() {
   const categoryNames = {
-    Visual: await getElementLanguageData("settingsCategoryVisual"),
-    Features: await getElementLanguageData("settingsCategoryFeatures"),
-    Performance: await getElementLanguageData("settingsCategoryPerformance"),
-    Advanced: await getElementLanguageData("settingsCategoryAdvanced"),
+    Visual: await locales.getElementLanguageData("settingsCategoryVisual"),
+    Features: await locales.getElementLanguageData("settingsCategoryFeatures"),
+    Performance: await locales.getElementLanguageData("settingsCategoryPerformance"),
+    Advanced: await locales.getElementLanguageData("settingsCategoryAdvanced"),
   };
 
   const socialLinks = [
@@ -36,7 +37,7 @@ async function initSettings() {
     {name: "ButterDogCoSite", url: "https://butterdogceo.github.io/bdogco/", icon: "img/butterdogco.png"},
   ];
 
-  let settings = {
+  let allSettings = {
     /*["Particles"]: {
       SetTo: "false",
       Options: ["true", "false"], // The default option is expected to be the first
@@ -52,11 +53,11 @@ async function initSettings() {
       Category: "Visual",
       LanguageKey: "Language",
       SetTo: _currentLanguage || "English",
-      Options: Object.keys(languages),
+      Options: Object.keys(locales.languages),
       UpdateFunction: (newLang) => {
         if (newLang != _currentLanguage) {
           _currentLanguage = newLang;
-          updateLanguage(newLang);
+          locales.updateLanguage(newLang);
         }
       },
     },
@@ -99,7 +100,7 @@ async function initSettings() {
         const enabled = (val == "true" || val == true) && true || false;
         updateVisibilityOfSettingsButton(enabled);
         if (settingsOpen && !enabled && appOpen) {
-          toggleSettings();
+          locales.toggleSettings();
         }
       }
     },
@@ -181,7 +182,7 @@ async function initSettings() {
     },
   }
 
-  buildSettingsUI(settings, socialLinks, categoryNames);
+  buildSettingsUI(allSettings, socialLinks, categoryNames);
 }
 
 async function buildSettingsUI(settings, socialLinks, categoryNames) {
@@ -206,7 +207,7 @@ async function buildSettingsUI(settings, socialLinks, categoryNames) {
   categories.forEach(async (category) => {
     const categoryElement = document.createElement("h3");
     categoryElement.setAttribute("data-lang", settingsHeaderLangPrefix + category.name);
-    categoryElement.innerText = !currentLanguageData && await getSettingHeaderText(category.name) || unsafeGetElementLanguageData(settingsHeaderLangPrefix + category.name);
+    categoryElement.innerText = !locales.currentLanguageData && await getSettingHeaderText(category.name) || locales.unsafeGetElementLanguageData(settingsHeaderLangPrefix + category.name);
     settingsList.appendChild(categoryElement);
     category.options.forEach((option) => {
       createOptionButton(option, settings);
@@ -216,7 +217,7 @@ async function buildSettingsUI(settings, socialLinks, categoryNames) {
   // Create social link header
   const header = document.createElement("h2");
   header.setAttribute("data-lang", "settingsExtraHeader");
-  header.innerText = await getElementLanguageData("settingsExtraHeader");
+  header.innerText = await locales.getElementLanguageData("settingsExtraHeader");
   header.id = "socialHeader";
 
   // Create social link buttons
@@ -237,7 +238,7 @@ async function buildSettingsUI(settings, socialLinks, categoryNames) {
 
     const text = document.createElement("p");
     text.setAttribute("data-lang", settingsSocialLangPrefix + link.name);
-    text.innerText = !currentLanguageData && (await getSocialLinkText(link.name) || link.name) || (unsafeGetElementLanguageData(settingsSocialLangPrefix + link.name) || link.name);
+    text.innerText = !locales.currentLanguageData && (await getSocialLinkText(link.name) || link.name) || (locales.unsafeGetElementLanguageData(settingsSocialLangPrefix + link.name) || link.name);
     text.className = "socialText";
     a.appendChild(text);
     container.appendChild(li);
@@ -248,7 +249,7 @@ async function buildSettingsUI(settings, socialLinks, categoryNames) {
 }
 
 
-export function toggleSettings() {
+settings.toggleSettings = function() {
   settingsFrame.classList.toggle("open");
   settingsOpen = settingsFrame.classList.contains("open");
   document.body.classList.toggle("settingsOpen", settingsOpen);
@@ -303,7 +304,7 @@ async function createOptionButton(name, settings) {
     frame.classList.add("option");
     const label = document.createElement("p");
     label.setAttribute("data-lang", settingsItemLangPrefix + option.LanguageKey);
-    label.innerText = option.LanguageKey && (!currentLanguageData && await getSettingDisplayName(option.LanguageKey) || unsafeGetElementLanguageData(settingsItemLangPrefix + option.LanguageKey)) || name;
+    label.innerText = option.LanguageKey && (!locales.currentLanguageData && await getSettingDisplayName(option.LanguageKey) || locales.unsafeGetElementLanguageData(settingsItemLangPrefix + option.LanguageKey)) || name;
     label.classList.add("label");
     frame.appendChild(label);
 
@@ -361,8 +362,8 @@ async function createOptionButton(name, settings) {
   }
 }
 
-updateLanguage(_currentLanguage).then(() => {
+locales.updateLanguage(_currentLanguage).then(() => {
   initSettings(); // Build settings after translations are ready
 });
 
-window.toggleSettings = toggleSettings;
+window.toggleSettings = settings.toggleSettings;

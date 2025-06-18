@@ -1,4 +1,4 @@
-import { languages, updateLanguage, getElementLanguageData, unsafeGetElementLanguageData, currentLanguage, currentLanguageData } from "./locales.js";
+import { languages, updateLanguage, getElementLanguageData, unsafeGetElementLanguageData, currentLanguage, currentLanguageData } from "./locales-old.js";
 let _currentLanguage = currentLanguage;
 
 // Settings Handler
