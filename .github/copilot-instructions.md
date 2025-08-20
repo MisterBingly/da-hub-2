@@ -7,7 +7,7 @@ Always reference these instructions first and fallback to search or bash command
 - **Setup and run the application:**
   - `npm install` -- takes 3 seconds. NEVER CANCEL.
   - `npx http-server -p 8080` -- starts immediately (under 1 second)
-  - Navigate to `http://127.0.0.1:8080/home.html` to access the main application
+  - Navigate to `http://127.0.0.1:8080/home.html` to access the main application directly (recommended for testing)
   - The server runs indefinitely until stopped with Ctrl+C
 
 - **No build process required** -- this is a static website served via HTTP server
@@ -32,8 +32,8 @@ Always reference these instructions first and fallback to search or bash command
 
 ## Code Structure and Key Files
 - **Main entry points:**
-  - `index.html` -- redirects to Google (not the main app)
-  - `home.html` -- main application interface
+  - `index.html` -- serves as a 'cloak' that redirects the current tab to Google.com and opens the actual application in a new about:blank window with an iframe to home.html (leaves minimal browser history trace)
+  - `home.html` -- main application interface (use this directly for testing as about:blank pages cannot be reloaded)
   - `home-new.html` -- alternative interface
 
 - **JavaScript modules (all in `/js/` directory):**
@@ -99,7 +99,7 @@ favicon.ico
 home-new.html   # Alternative interface
 home.html       # Main application
 img/            # Images and icons
-index.html      # Redirects to Google
+index.html      # Cloaking page that redirects to Google.com and opens app in about:blank
 js/             # JavaScript modules
 package-lock.json
 package.json    # Only has http-server dependency
@@ -144,6 +144,7 @@ Hit CTRL-C to stop the server
 - **Mobile support** varies by game (marked in games database)
 - **No user accounts** -- everything is stored locally in browser
 - **External dependencies** are minimal and loaded from CDNs
+- **Cloaking mechanism:** index.html provides stealth access by redirecting to Google.com while opening the app in about:blank (for testing, use home.html directly as about:blank cannot be reloaded)
 
 ## Troubleshooting
 - **Games not loading:** Check console for errors, verify game files exist
