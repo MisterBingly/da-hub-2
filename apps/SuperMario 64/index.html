@@ -42,11 +42,10 @@
       bottom: 0;
       left: 0;
       text-align: center;
-      opacity: 0.8;
       list-style-type: none;
       margin: 0;
       padding: 0;
-      opacity: 0.5;
+      opacity: 0.7;
       transition: 0.2s ease opacity;
 
       /* Horizontal list */
@@ -75,8 +74,12 @@
       }
 
       &:hover {
-        opacity: 0.8;
+        opacity: 0.9;
       }
+    }
+
+    #controls.hidden {
+      display: none;
     }
 
     #controller,
@@ -130,8 +133,61 @@
     <li>Z: Space</li>
     <li>Start: Enter</li>
     <li>C-stick: WASD</li>
-    <li><button onclick="document.getElementById('controls').remove()">Click to close</button></li>
+    <li><button onclick="toggleControls()">Hide Controls</button></li>
   </ul>
+
+  <script>
+    let controlsVisible = true;
+    
+    function toggleControls() {
+      const controlsElement = document.getElementById('controls');
+      const toggleButton = controlsElement.querySelector('button');
+      
+      if (controlsVisible) {
+        controlsElement.style.display = 'none';
+        controlsVisible = false;
+        // Create a small show button in the bottom-left corner
+        if (!document.getElementById('show-controls-btn')) {
+          const showBtn = document.createElement('button');
+          showBtn.id = 'show-controls-btn';
+          showBtn.innerHTML = 'Show Controls (H)';
+          showBtn.onclick = toggleControls;
+          showBtn.style.cssText = `
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            opacity: 0.7;
+            transition: 0.2s ease opacity;
+          `;
+          showBtn.onmouseenter = () => showBtn.style.opacity = '1';
+          showBtn.onmouseleave = () => showBtn.style.opacity = '0.7';
+          document.body.appendChild(showBtn);
+        }
+      } else {
+        controlsElement.style.display = 'block';
+        controlsVisible = true;
+        toggleButton.innerHTML = 'Hide Controls';
+        // Remove the show button
+        const showBtn = document.getElementById('show-controls-btn');
+        if (showBtn) showBtn.remove();
+      }
+    }
+    
+    // Keyboard shortcut: Press 'H' to toggle controls
+    document.addEventListener('keydown', function(event) {
+      if (event.key.toLowerCase() === 'h' && !event.ctrlKey && !event.altKey && !event.metaKey) {
+        event.preventDefault();
+        toggleControls();
+      }
+    });
+  </script>
 
 </body>
 
